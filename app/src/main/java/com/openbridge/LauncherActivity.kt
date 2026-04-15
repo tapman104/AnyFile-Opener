@@ -113,10 +113,15 @@ class LauncherActivity : AppCompatActivity() {
 
     private fun showSettingsMenu(view: View) {
         val popup = PopupMenu(this, view)
+        popup.menu.add("How to Use")
         popup.menu.add("About")
         popup.menu.add("Buy Me a Coffee")
         popup.setOnMenuItemClickListener { item ->
             when (item.title) {
+                "How to Use" -> {
+                    showHelpDialog()
+                    true
+                }
                 "About" -> {
                     showAboutDialog()
                     true
@@ -138,6 +143,21 @@ class LauncherActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Toast.makeText(this, "Could not open link", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun showHelpDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Help & Guide")
+            .setMessage("AnyFile Opener is your swiss-army knife for files.\n\n" +
+                    "How to use:\n" +
+                    "1. Pick a file: Tap the center area or use 'System File Manager' for restricted folders.\n" +
+                    "2. Auto-Detect: The app scans the binary header to find the real type.\n" +
+                    "3. Open: Use 'Open Normally' or 'Open as...' to pick a category.\n\n" +
+                    "Pro Tips:\n" +
+                    "• Advanced: Type custom MIMEs like 'text/xml' if the auto-detect isn't specific enough.\n" +
+                    "• Inspect: Use 'INSPECT BINARY' to see if a file is corrupted or to read hidden text headers.")
+            .setPositiveButton("Got it", null)
+            .show()
     }
 
     private fun showAboutDialog() {

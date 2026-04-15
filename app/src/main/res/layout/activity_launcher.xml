@@ -31,7 +31,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginBottom="24dp"
-                    android:src="@android:drawable/ic_menu_upload"
+                    android:src="@drawable/ic_launcher_foreground"
                     app:tint="@color/primary" />
 
                 <TextView
@@ -137,8 +137,7 @@
                     android:textColor="@color/on_primary"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:background="@drawable/bg_primary_gradient"
-                    app:backgroundTint="@null" />
+                    app:cornerRadius="32dp" />
 
                 <Button
                     android:id="@+id/btnOpenAs"
@@ -304,8 +303,7 @@
                     android:textColor="@color/on_primary"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:background="@drawable/bg_primary_gradient"
-                    app:backgroundTint="@null" />
+                    app:cornerRadius="32dp" />
 
                 <Button
                     android:id="@+id/btnInspect"
@@ -372,6 +370,85 @@
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- USE CASES -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:letterSpacing="0.12"
+                    android:text="USE CASES"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:cardBackgroundColor="@color/surface_container_low"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="14dp">
+                        <TextView
+                            android:layout_width="32dp"
+                            android:layout_height="wrap_content"
+                            android:text="&#128269;"
+                            android:textSize="20sp"
+                            android:gravity="center" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Fix Broken Extensions: Detect the real file type by scanning its binary data."
+                            android:textColor="@color/on_surface"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:cardBackgroundColor="@color/surface_container_low"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="14dp">
+                        <TextView
+                            android:layout_width="32dp"
+                            android:layout_height="wrap_content"
+                            android:text="&#128275;"
+                            android:textSize="20sp"
+                            android:gravity="center" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Manual Override: Force any file to open as a specific type of your choice."
+                            android:textColor="@color/on_surface"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
