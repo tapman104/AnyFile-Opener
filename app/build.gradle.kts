@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.openbridge"
         minSdk = 26
-        targetSdk = 29
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
