@@ -20,29 +20,36 @@ object IntentRouter {
             val viewIntent = Intent(Intent.ACTION_VIEW).apply {
                 setDataAndType(uri, mimeType)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                // Use ClipData to ensure permission is passed correctly to the target app
+                // Use ClipData - essential for Android 10+ URI permission propagation
                 clipData = ClipData.newRawUri(null, uri)
             }
 
-            // Explicitly grant read permission to possible handlers
+            // Explicitly grant read permission to all possible handlers
             try {
+                // Use MATCH_ALL to ensure we grant permissions to all apps that can handle this file
                 val resInfoList = context.packageManager.queryIntentActivities(
-                    viewIntent, PackageManager.MATCH_DEFAULT_ONLY
+                    viewIntent, PackageManager.MATCH_ALL
                 )
                 for (resolveInfo in resInfoList) {
                     val packageName = resolveInfo.activityInfo.packageName
-                    context.grantUriPermission(
-                        packageName, uri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    )
+                    try {
+                        context.grantUriPermission(
+                            packageName, uri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        )
+                    } catch (e: Exception) {
+                        // Ignore if we can't grant to a specific package
+                    }
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to grant permissions: ${e.message}")
             }
 
             val chooser = Intent.createChooser(viewIntent, "Open with").apply {
+                // Chooser also needs these flags and ClipData to pass permissions down
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                clipData = ClipData.newRawUri(null, uri)
             }
             context.startActivity(chooser)
         } catch (e: Exception) {

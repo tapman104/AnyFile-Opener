@@ -7,22 +7,27 @@
     android:focusable="true"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingVertical="16dp"
+    android:paddingHorizontal="8dp"
+    android:layout_margin="4dp">
 
     <!-- Emoji icon -->
     <TextView
         android:id="@+id/emojiText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:textSize="26sp" />
+        android:layout_marginBottom="8dp"
+        android:textSize="28sp"
+        android:filterTouchesWhenObscured="true" />
 
     <!-- Category label -->
     <TextView
         android:id="@+id/labelText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:textSize="11sp" />
+        android:textColor="@color/on_surface"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:alpha="0.9" />
 
 </LinearLayout>
