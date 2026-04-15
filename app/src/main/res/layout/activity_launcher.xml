@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0D0D0F">
+    android:background="@color/surface">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="32dp">
+            android:paddingBottom="48dp">
 
             <!-- HERO SECTION -->
             <LinearLayout
@@ -22,210 +22,37 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:paddingTop="48dp"
-                android:paddingBottom="28dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp">
+                android:paddingTop="64dp"
+                android:paddingBottom="40dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp">
 
                 <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    android:layout_marginBottom="20dp"
-                    android:src="@android:drawable/ic_menu_upload"
-                    android:tint="#8B7FD4" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center"
-                    android:text="Open any file, your way"
-                    android:textColor="#FFFFFF"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:lineSpacingMultiplier="1.1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:gravity="center"
-                    android:text="Fix and open files that won't work"
-                    android:textColor="#9090A0"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_marginBottom="24dp"
-                    android:gravity="center"
-                    android:text="Open files even from restricted folders"
-                    android:textColor="#9090A0"
-                    android:textSize="14sp" />
-
-                <View
-                    android:layout_width="40dp"
-                    android:layout_height="2dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="#3A3A5A" />
+                    android:src="@android:drawable/ic_menu_upload"
+                    app:tint="@color/primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:background="#1A1A2E"
-                    android:paddingLeft="14dp"
-                    android:paddingRight="14dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:gravity="center"
-                    android:text="Automatically detects file type and lets you choose how to open it"
-                    android:textColor="#B0B0C8"
-                    android:textSize="13sp" />
+                    android:text="AnyFile Opener"
+                    android:textColor="@color/on_surface"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="-0.02" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#1A1A2E"
-                    android:paddingLeft="14dp"
-                    android:paddingRight="14dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
                     android:gravity="center"
-                    android:text="Works with any installed app - even when Android blocks access"
-                    android:textColor="#B0B0C8"
-                    android:textSize="13sp" />
+                    android:text="The universal router for your files"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="16sp" />
 
-            </LinearLayout>
-
-            <!-- HOW TO USE -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:layout_marginBottom="24dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:letterSpacing="0.12"
-                    android:text="HOW TO USE"
-                    android:textColor="#9090A0"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        app:cardBackgroundColor="#1A1A2E"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="12dp">
-                            <TextView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginBottom="8dp"
-                                android:background="@drawable/bg_step_circle"
-                                android:gravity="center"
-                                android:text="1"
-                                android:textColor="#FFFFFF"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="Select a file from your device"
-                                android:textColor="#CCCCCC"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginRight="3dp"
-                        app:cardBackgroundColor="#1A1A2E"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="12dp">
-                            <TextView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginBottom="8dp"
-                                android:background="@drawable/bg_step_circle"
-                                android:gravity="center"
-                                android:text="2"
-                                android:textColor="#FFFFFF"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="We detect the real file type"
-                                android:textColor="#CCCCCC"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        app:cardBackgroundColor="#1A1A2E"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="12dp">
-                            <TextView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_marginBottom="8dp"
-                                android:background="@drawable/bg_step_circle"
-                                android:gravity="center"
-                                android:text="3"
-                                android:textColor="#FFFFFF"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="Choose how you want to open it"
-                                android:textColor="#CCCCCC"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
             </LinearLayout>
 
             <!-- FILE PICKER CTA -->
@@ -234,9 +61,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#1A1A2E"
-                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/surface_container_low"
+                app:cardCornerRadius="24dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -245,25 +72,26 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="28dp">
+                    android:padding="32dp">
 
                     <ImageView
                         android:id="@+id/fileIcon"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginBottom="12dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="16dp"
                         android:src="@android:drawable/ic_menu_upload"
-                        android:tint="#8B7FD4" />
+                        app:tint="@color/secondary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:text="Try with a file"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Tap to select a file"
+                        android:textColor="@color/on_surface"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -272,74 +100,24 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="middle"
                         android:maxLines="1"
-                        android:text="Tap to select any file from your device"
-                        android:textColor="#9090A0"
-                        android:textSize="13sp" />
+                        android:text="Pick any file from your device"
+                        android:textColor="@color/on_surface_variant"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/detectedMimeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textColor="#8B7FD4"
-                        android:textSize="12sp"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
                         android:visibility="gone" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- SYSTEM FILES SHORTCUT -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#1A1A2E"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp">
-
-                <LinearLayout
-                    android:id="@+id/btnSystemFiles"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@android:drawable/ic_menu_manage"
-                        android:tint="#8B7FD4" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Open System File Manager"
-                            android:textColor="#FFFFFF"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Access restricted /Android/data folders"
-                            android:textColor="#9090A0"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- ACTION BUTTONS (shown after file is picked) -->
+            <!-- ACTION BUTTONS -->
             <LinearLayout
                 android:id="@+id/actionButtonsGroup"
                 android:layout_width="match_parent"
@@ -347,33 +125,33 @@
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:visibility="gone">
 
                 <Button
                     android:id="@+id/btnOpenNormal"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="12dp"
                     android:text="Open normally"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
+                    android:textColor="@color/on_primary"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    app:backgroundTint="#7B2FBE"
-                    app:cornerRadius="14dp" />
+                    android:background="@drawable/bg_primary_gradient"
+                    app:backgroundTint="@null" />
 
                 <Button
                     android:id="@+id/btnOpenAs"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="12dp"
                     android:text="Open as..."
-                    android:textColor="#CCCCCC"
-                    android:textSize="15sp"
-                    app:strokeColor="#8B7FD4"
+                    android:textColor="@color/on_surface"
+                    android:textSize="16sp"
+                    app:strokeColor="@color/outline_variant"
                     app:strokeWidth="1dp"
-                    app:cornerRadius="14dp" />
+                    app:cornerRadius="32dp" />
 
                 <Button
                     android:id="@+id/btnAdvancedToggle"
@@ -382,8 +160,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Advanced options"
-                    android:textColor="#8B7FD4"
-                    android:textSize="13sp" />
+                    android:textColor="@color/secondary"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -395,59 +173,21 @@
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:paddingTop="4dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="32dp"
                 android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginEnd="8dp"
-                        android:src="@android:drawable/ic_menu_manage"
-                        android:tint="#8B7FD4" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Override file type manually"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="View file details and raw data"
-                            android:textColor="#9090A0"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/mimeInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    app:boxBackgroundColor="#1A1A2E"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxStrokeColor="#2E2E4A"
-                    app:hintTextColor="#9090A0"
+                    android:layout_marginBottom="16dp"
+                    app:boxBackgroundColor="@color/surface_container"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxStrokeColor="@color/primary"
+                    app:hintTextColor="@color/on_surface_variant"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -456,256 +196,196 @@
                         android:layout_height="wrap_content"
                         android:hint="Target MIME Type"
                         android:inputType="text"
-                        android:text="application/octet-stream"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/on_surface"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/mimeChips"
+                <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:chipSpacingHorizontal="8dp">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipApk"
-                        style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:scrollbars="none">
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/mimeChips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="APK"
-                        android:textColor="#CCCCCC"
-                        app:chipBackgroundColor="#2A2A3E"
-                        app:chipStrokeColor="#3A3A5A"
-                        app:chipStrokeWidth="1dp" />
+                        app:singleLine="true"
+                        app:chipSpacingHorizontal="8dp">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipTxt"
-                        style="@style/Widget.MaterialComponents.Chip.Action"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TXT"
-                        android:textColor="#CCCCCC"
-                        app:chipBackgroundColor="#2A2A3E"
-                        app:chipStrokeColor="#3A3A5A"
-                        app:chipStrokeWidth="1dp" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipApk"
+                            style="@style/Widget.MaterialComponents.Chip.Action"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="APK"
+                            android:textColor="@color/on_surface"
+                            app:chipBackgroundColor="@color/surface_container_highest"
+                            app:chipStrokeWidth="0dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipJson"
-                        style="@style/Widget.MaterialComponents.Chip.Action"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="JSON"
-                        android:textColor="#CCCCCC"
-                        app:chipBackgroundColor="#2A2A3E"
-                        app:chipStrokeColor="#3A3A5A"
-                        app:chipStrokeWidth="1dp" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipTxt"
+                            style="@style/Widget.MaterialComponents.Chip.Action"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="TXT"
+                            android:textColor="@color/on_surface"
+                            app:chipBackgroundColor="@color/surface_container_highest"
+                            app:chipStrokeWidth="0dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipPdf"
-                        style="@style/Widget.MaterialComponents.Chip.Action"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PDF"
-                        android:textColor="#CCCCCC"
-                        app:chipBackgroundColor="#2A2A3E"
-                        app:chipStrokeColor="#3A3A5A"
-                        app:chipStrokeWidth="1dp" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipJson"
+                            style="@style/Widget.MaterialComponents.Chip.Action"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="JSON"
+                            android:textColor="@color/on_surface"
+                            app:chipBackgroundColor="@color/surface_container_highest"
+                            app:chipStrokeWidth="0dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipJpg"
-                        style="@style/Widget.MaterialComponents.Chip.Action"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="JPG"
-                        android:textColor="#CCCCCC"
-                        app:chipBackgroundColor="#2A2A3E"
-                        app:chipStrokeColor="#3A3A5A"
-                        app:chipStrokeWidth="1dp" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipPdf"
+                            style="@style/Widget.MaterialComponents.Chip.Action"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PDF"
+                            android:textColor="@color/on_surface"
+                            app:chipBackgroundColor="@color/surface_container_highest"
+                            app:chipStrokeWidth="0dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipMp4"
-                        style="@style/Widget.MaterialComponents.Chip.Action"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MP4"
-                        android:textColor="#CCCCCC"
-                        app:chipBackgroundColor="#2A2A3E"
-                        app:chipStrokeColor="#3A3A5A"
-                        app:chipStrokeWidth="1dp" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipJpg"
+                            style="@style/Widget.MaterialComponents.Chip.Action"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="JPG"
+                            android:textColor="@color/on_surface"
+                            app:chipBackgroundColor="@color/surface_container_highest"
+                            app:chipStrokeWidth="0dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipMp3"
-                        style="@style/Widget.MaterialComponents.Chip.Action"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MP3"
-                        android:textColor="#CCCCCC"
-                        app:chipBackgroundColor="#2A2A3E"
-                        app:chipStrokeColor="#3A3A5A"
-                        app:chipStrokeWidth="1dp" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipMp4"
+                            style="@style/Widget.MaterialComponents.Chip.Action"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="MP4"
+                            android:textColor="@color/on_surface"
+                            app:chipBackgroundColor="@color/surface_container_highest"
+                            app:chipStrokeWidth="0dp" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipZip"
-                        style="@style/Widget.MaterialComponents.Chip.Action"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ZIP"
-                        android:textColor="#CCCCCC"
-                        app:chipBackgroundColor="#2A2A3E"
-                        app:chipStrokeColor="#3A3A5A"
-                        app:chipStrokeWidth="1dp" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipMp3"
+                            style="@style/Widget.MaterialComponents.Chip.Action"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="MP3"
+                            android:textColor="@color/on_surface"
+                            app:chipBackgroundColor="@color/surface_container_highest"
+                            app:chipStrokeWidth="0dp" />
 
-                </com.google.android.material.chip.ChipGroup>
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipZip"
+                            style="@style/Widget.MaterialComponents.Chip.Action"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ZIP"
+                            android:textColor="@color/on_surface"
+                            app:chipBackgroundColor="@color/surface_container_highest"
+                            app:chipStrokeWidth="0dp" />
+
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
 
                 <Button
                     android:id="@+id/btnOpenForce"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="OPEN WITH FORCE"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="FORCE OPEN"
+                    android:textColor="@color/on_primary"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    app:backgroundTint="#7B2FBE"
-                    app:cornerRadius="14dp" />
+                    android:background="@drawable/bg_primary_gradient"
+                    app:backgroundTint="@null" />
 
                 <Button
                     android:id="@+id/btnInspect"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="64dp"
                     android:text="INSPECT BINARY"
-                    android:textColor="#CCCCCC"
-                    android:textSize="15sp"
-                    app:strokeColor="#3A3A5A"
+                    android:textColor="@color/on_surface"
+                    android:textSize="16sp"
+                    app:strokeColor="@color/outline_variant"
                     app:strokeWidth="1dp"
-                    app:cornerRadius="14dp" />
+                    app:cornerRadius="32dp" />
 
             </LinearLayout>
 
-            <!-- USE CASES -->
-            <LinearLayout
+            <!-- SYSTEM FILES SHORTCUT -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:layout_marginBottom="24dp">
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="32dp"
+                app:cardBackgroundColor="@color/surface_container_high"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/btnSystemFiles"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:letterSpacing="0.12"
-                    android:text="USE CASES"
-                    android:textColor="#9090A0"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="20dp">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    app:cardBackgroundColor="#1A1A2E"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp">
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@android:drawable/ic_menu_manage"
+                        app:tint="@color/tertiary" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="14dp">
-                        <TextView
-                            android:layout_width="32dp"
-                            android:layout_height="wrap_content"
-                            android:text="&#128269;"
-                            android:textSize="20sp"
-                            android:gravity="center" />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="Fix Broken Extensions: Detect the real file type by scanning its binary data."
-                            android:textColor="#CCCCCC"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    app:cardBackgroundColor="#1A1A2E"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="14dp">
                         <TextView
-                            android:layout_width="32dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="&#128275;"
-                            android:textSize="20sp"
-                            android:gravity="center" />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="Manual Override: Force any file to open as a specific type of your choice."
-                            android:textColor="#CCCCCC"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                            android:text="Open System File Manager"
+                            android:textColor="@color/on_surface"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="#1A1A2E"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="0dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="14dp">
                         <TextView
-                            android:layout_width="32dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="&#128300;"
-                            android:textSize="20sp"
-                            android:gravity="center" />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="Binary Inspection: View hex dump and raw data to analyze unknown files."
-                            android:textColor="#CCCCCC"
-                            android:textSize="13sp" />
+                            android:text="Access restricted folders directly"
+                            android:textColor="@color/on_surface_variant"
+                            android:textSize="12sp" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
 
-    <!-- Top Right Settings Icon -->
     <ImageButton
         android:id="@+id/btnSettings"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_gravity="top|end"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@android:drawable/ic_menu_preferences"
-        android:tint="#8B7FD4"
+        app:tint="@color/on_surface_variant"
         android:contentDescription="Settings" />
 
 </FrameLayout>

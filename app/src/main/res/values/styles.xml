@@ -11,8 +11,12 @@
     </style>
 
     <style name="Theme.OpenBridge.Launcher" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:windowBackground">#0D0D0F</item>
-        <item name="android:statusBarColor">#0D0D0F</item>
-        <item name="android:navigationBarColor">#0D0D0F</item>
+        <item name="android:windowBackground">@color/surface</item>
+        <item name="android:statusBarColor">@color/surface</item>
+        <item name="android:navigationBarColor">@color/surface</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="android:textColorPrimary">@color/on_surface</item>
+        <item name="android:textColorSecondary">@color/on_surface_variant</item>
     </style>
 </resources>
