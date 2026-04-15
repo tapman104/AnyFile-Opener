@@ -219,11 +219,7 @@ class LauncherActivity : AppCompatActivity() {
             binding.chipApk to "application/vnd.android.package-archive",
             binding.chipTxt to "text/plain",
             binding.chipJson to "application/json",
-            binding.chipPdf to "application/pdf",
-            binding.chipJpg to "image/jpeg",
-            binding.chipMp4 to "video/mp4",
-            binding.chipMp3 to "audio/mpeg",
-            binding.chipZip to "application/zip"
+            binding.chipPdf to "application/pdf"
         )
         for ((chip, mime) in chipMimes) {
             chip.setOnClickListener {

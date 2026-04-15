@@ -59,7 +59,7 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
             fileName != null -> "${fileName.take(41)}…"
             else -> "Open as…"
         }
-        binding.subtitleText.text = "Detected: ${detectedType.emoji} ${detectedType.label}"
+        binding.subtitleText.text = "Detected: ${detectedType.label}"
 
         val types = MimeDetector.FileType.entries.filter { it != MimeDetector.FileType.UNKNOWN }
         val preSelected = if (detectedType == MimeDetector.FileType.UNKNOWN) -1 else types.indexOf(detectedType)

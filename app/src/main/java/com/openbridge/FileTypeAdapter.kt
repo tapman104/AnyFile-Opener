@@ -24,9 +24,34 @@ class FileTypeAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val type = types[position]
-        holder.binding.emojiText.text = type.emoji
+        holder.binding.typeIcon.setImageResource(type.iconRes)
         holder.binding.labelText.text = type.label
-        holder.binding.root.isSelected = position == selectedIndex
+
+        val isSelected = position == selectedIndex
+        holder.binding.root.isSelected = isSelected
+
+        val context = holder.itemView.context
+
+        // Premium icon styling
+        val tintColor = when(type) {
+            MimeDetector.FileType.VIDEO -> context.getColor(R.color.type_video)
+            MimeDetector.FileType.AUDIO -> context.getColor(R.color.type_audio)
+            MimeDetector.FileType.IMAGE -> context.getColor(R.color.type_image)
+            MimeDetector.FileType.DOCUMENT -> context.getColor(R.color.type_document)
+            MimeDetector.FileType.ARCHIVE -> context.getColor(R.color.type_archive)
+            MimeDetector.FileType.APK -> context.getColor(R.color.type_apk)
+            MimeDetector.FileType.TEXT -> context.getColor(R.color.type_text)
+            else -> context.getColor(R.color.primary)
+        }
+
+        if (isSelected) {
+            holder.binding.iconContainer.setCardBackgroundColor(tintColor)
+            holder.binding.typeIcon.setColorFilter(context.getColor(R.color.on_surface))
+        } else {
+            holder.binding.iconContainer.setCardBackgroundColor(context.getColor(R.color.surface_container_highest))
+            holder.binding.typeIcon.setColorFilter(tintColor)
+        }
+
         holder.binding.root.setOnClickListener {
             val prev = selectedIndex
             selectedIndex = position

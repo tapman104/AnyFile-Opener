@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_type_item"
@@ -7,22 +8,32 @@
     android:focusable="true"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="16dp">
 
-    <!-- Emoji icon -->
-    <TextView
-        android:id="@+id/emojiText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:textSize="26sp" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/iconContainer"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="12dp"
+        app:cardBackgroundColor="@color/surface_container_highest"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp">
 
-    <!-- Category label -->
+        <ImageView
+            android:id="@+id/typeIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            app:tint="@color/primary" />
+
+    </androidx.cardview.widget.CardView>
+
     <TextView
         android:id="@+id/labelText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:textSize="11sp" />
+        android:textColor="@color/on_surface"
+        android:textSize="13sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

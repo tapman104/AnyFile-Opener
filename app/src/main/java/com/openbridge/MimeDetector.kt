@@ -12,29 +12,29 @@ import com.openbridge.utils.ByteReader
  */
 object MimeDetector {
 
-    enum class FileType(val label: String, val emoji: String, val category: String) {
-        VIDEO("Video",    "\uD83C\uDFAC", "video"),
-        AUDIO("Audio",    "\uD83C\uDFB5", "audio"),
-        IMAGE("Image",    "\uD83D\uDDBC", "image"),
-        DOCUMENT("Document", "\uD83D\uDCC4", "pdf"),
-        ARCHIVE("Archive", "\uD83D\uDCE6", "zip"),
-        APK("APK",        "\u2699",        "apk"),
-        TEXT("Text",      "\uD83D\uDCC3", "text"),
-        UNKNOWN("Unknown", "?",            "any")
+    enum class FileType(val label: String, val iconRes: Int, val category: String) {
+        VIDEO("Video",    android.R.drawable.ic_menu_slideshow, "video"),
+        AUDIO("Audio",    android.R.drawable.ic_lock_silent_mode_off, "audio"),
+        IMAGE("Image",    android.R.drawable.ic_menu_gallery, "image"),
+        DOCUMENT("Document", android.R.drawable.ic_menu_edit, "pdf"),
+        ARCHIVE("Archive", android.R.drawable.ic_menu_save, "zip"),
+        APK("APK",        android.R.drawable.ic_menu_manage, "apk"),
+        TEXT("Text",      android.R.drawable.ic_menu_agenda, "text"),
+        UNKNOWN("Unknown", android.R.drawable.ic_menu_help, "any")
     }
 
     // Build wildcard MIMEs at runtime; no slash-star token appears in source.
     fun mimeOf(type: FileType): String {
         val s = "/"
         return when (type.category) {
-            "video" -> "video$s*"
-            "audio" -> "audio$s*"
-            "image" -> "image$s*"
+            "video" -> "video*"
+            "audio" -> "audio*"
+            "image" -> "image*"
             "pdf"   -> "application/pdf"
             "zip"   -> "application/zip"
             "apk"   -> "application/vnd.android.package-archive"
             "text"  -> "text/plain"
-            else    -> "*$s*"
+            else    -> "**"
         }
     }
 
