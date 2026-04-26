@@ -137,7 +137,8 @@
                     android:textColor="@color/on_primary"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:cornerRadius="32dp" />
+                    android:background="@drawable/bg_primary_gradient"
+                    app:backgroundTint="@null" />
 
                 <Button
                     android:id="@+id/btnOpenAs"
@@ -303,7 +304,8 @@
                     android:textColor="@color/on_primary"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:cornerRadius="32dp" />
+                    android:background="@drawable/bg_primary_gradient"
+                    app:backgroundTint="@null" />
 
                 <Button
                     android:id="@+id/btnInspect"
@@ -422,7 +424,6 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     app:cardBackgroundColor="@color/surface_container_low"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp">
@@ -453,16 +454,32 @@
         </LinearLayout>
     </ScrollView>
 
-    <ImageButton
-        android:id="@+id/btnSettings"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@android:drawable/ic_menu_preferences"
-        app:tint="@color/on_surface_variant"
-        android:contentDescription="Settings" />
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Settings"
+            android:src="@android:drawable/ic_menu_preferences"
+            app:tint="@color/on_surface_variant" />
+
+        <ImageButton
+            android:id="@+id/btnOverflow"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="More options"
+            android:src="@android:drawable/ic_menu_more"
+            app:tint="@color/on_surface_variant" />
+
+    </LinearLayout>
 
 </FrameLayout>

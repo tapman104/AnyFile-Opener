@@ -24,7 +24,7 @@ object MimeDetector {
     }
 
     // Build wildcard MIMEs at runtime; no slash-star token appears in source.
-    fun mimeOf(type: FileType): String {
+    fun mimeOf(type: FileType, fallback: String = "*/*"): String {
         val s = "/"
         return when (type.category) {
             "video" -> "video$s*"
@@ -34,19 +34,19 @@ object MimeDetector {
             "zip"   -> "application/zip"
             "apk"   -> "application/vnd.android.package-archive"
             "text"  -> "text/plain"
-            else    -> "*$s*"
+            else    -> fallback
         }
     }
 
     data class DetectionResult(val fileType: FileType, val mime: String)
 
-    fun detect(contentResolver: ContentResolver, uri: Uri, fileName: String?): DetectionResult {
+    fun detect(contentResolver: ContentResolver, uri: Uri, fileName: String?, fallbackMime: String = "*/*"): DetectionResult {
         val header = ByteReader.readHeader(contentResolver, uri, 32)
-        return detectFromHeader(header, fileName?.lowercase().orEmpty())
+        return detectFromHeader(header, fileName?.lowercase().orEmpty(), fallbackMime)
     }
 
-    fun detectFromHeader(header: ByteArray, name: String = ""): DetectionResult {
-        if (header.isEmpty()) return extensionFallback(name, header)
+    fun detectFromHeader(header: ByteArray, name: String = "", fallbackMime: String = "*/*"): DetectionResult {
+        if (header.isEmpty()) return extensionFallback(name, header, fallbackMime)
 
         return when {
             // Video
@@ -102,7 +102,7 @@ object MimeDetector {
             matchBytes(header, 0x37, 0x7A, 0xBC, 0xAF) ->
                 DetectionResult(FileType.ARCHIVE, "application/x-7z-compressed")
 
-            else -> extensionFallback(name, header)
+            else -> extensionFallback(name, header, fallbackMime)
         }
     }
 
@@ -117,7 +117,7 @@ object MimeDetector {
         return "video/mp4"
     }
 
-    private fun extensionFallback(name: String, header: ByteArray = ByteArray(0)): DetectionResult {
+    private fun extensionFallback(name: String, header: ByteArray = ByteArray(0), fallbackMime: String = "*/*"): DetectionResult {
         val ext = name.substringAfterLast('.', "").lowercase()
 
         // 1. High-priority overrides
@@ -146,7 +146,7 @@ object MimeDetector {
         // 3. Heuristic fallbacks
         return when {
             header.isNotEmpty() && isLikelyText(header) -> DetectionResult(FileType.TEXT, "text/plain")
-            else -> DetectionResult(FileType.UNKNOWN, mimeOf(FileType.UNKNOWN))
+            else -> DetectionResult(FileType.UNKNOWN, fallbackMime)
         }
     }
 

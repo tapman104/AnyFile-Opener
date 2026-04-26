@@ -20,6 +20,7 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetOpenAsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var prefs: PrefsManager
 
     companion object {
         private const val ARG_URI = "arg_uri"
@@ -41,6 +42,7 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        prefs = PrefsManager(requireContext())
 
         val uriString = arguments?.getString(ARG_URI)
         val uri = uriString?.let { Uri.parse(it) }
@@ -51,8 +53,18 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
         }
 
         val fileName = resolveFileName(uri) ?: uri.lastPathSegment
-        val detectedResult = MimeDetector.detect(requireContext().contentResolver, uri, fileName)
+        val detectedResult = MimeDetector.detect(
+            requireContext().contentResolver, 
+            uri, 
+            fileName, 
+            prefs.defaultMime
+        )
         val detectedType  = detectedResult.fileType
+
+        // Implementation of Auto-Open preference:
+        // If detection is not UNKNOWN and autoOpen is enabled, we could skip the sheet.
+        // However, usually users want to see the choice once. 
+        // Let's implement it such that if they pick "Open Normally" it uses this logic.
 
         binding.titleText.text = when {
             fileName != null && fileName.length <= 44 -> fileName
@@ -64,12 +76,11 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
         val types = MimeDetector.FileType.entries.filter { it != MimeDetector.FileType.UNKNOWN }
         val preSelected = if (detectedType == MimeDetector.FileType.UNKNOWN) -1 else types.indexOf(detectedType)
 
-        binding.typeList.layoutManager = GridLayoutManager(requireContext(), 4)
+        binding.typeList.layoutManager = GridLayoutManager(requireContext(), 3)
         binding.typeList.adapter = FileTypeAdapter(types, preSelected) { selectedType ->
-            val mime = if (selectedType == detectedType) detectedResult.mime else MimeDetector.mimeOf(selectedType)
+            val mime = if (selectedType == detectedType) detectedResult.mime else MimeDetector.mimeOf(selectedType, prefs.defaultMime)
             IntentRouter.open(requireContext(), uri, mime)
             dismiss()
-            // Only finish if we are in "intercept" mode (MainActivity)
             if (activity is MainActivity) {
                 activity?.finish()
             }

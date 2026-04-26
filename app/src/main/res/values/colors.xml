@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="surface">#0E0E13</color>
-    <color name="surface_container_low">#131318</color>
-    <color name="surface_container">#19191F</color>
-    <color name="surface_container_high">#1F1F26</color>
-    <color name="surface_container_highest">#25252C</color>
-    <color name="surface_bright">#2C2B33</color>
+    <!-- Backgrounds -->
+    <color name="surface">#0A0A0E</color>
+    <color name="surface_container_low">#111118</color>
+    <color name="surface_container">#161622</color>
+    <color name="surface_container_high">#1D1D2B</color>
+    <color name="surface_container_highest">#252536</color>
 
-    <color name="primary">#E08EFE</color>
-    <color name="primary_container">#D180EF</color>
-    <color name="secondary">#BA92FA</color>
+    <!-- Brand Colors -->
+    <color name="primary">#A68DF6</color>
+    <color name="primary_variant">#8B7FD4</color>
+    <color name="secondary">#E08EFE</color>
     <color name="secondary_container">#573092</color>
     <color name="tertiary">#FF5FD0</color>
 
-    <color name="on_surface">#F8F5FD</color>
-    <color name="on_surface_variant">#ACAAB1</color>
-    <color name="on_primary">#4F006C</color>
-    <color name="on_secondary">#370471</color>
+    <!-- Text -->
+    <color name="on_surface">#FDFDFF</color>
+    <color name="on_surface_variant">#A0A0B8</color>
+    <color name="on_primary">#FFFFFF</color>
 
-    <color name="outline">#76747B</color>
-    <color name="outline_variant">#48474D</color>
-
-    <color name="error">#D73357</color>
-
+    <!-- Accents -->
+    <color name="outline_variant">#2A2A3E</color>
     <color name="glass_white_10">#1AFFFFFF</color>
-    <color name="glass_white_20">#33FFFFFF</color>
 </resources>

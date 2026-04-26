@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <queries>
-        <!-- Broad visibility for any app that can view content or files -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="content" />
@@ -56,6 +55,12 @@
                 <data android:mimeType="application/octet-stream" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.openbridge.SettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:theme="@style/Theme.OpenBridge.Launcher" />
 
         <receiver
             android:name="com.openbridge.FolderWidgetProvider"

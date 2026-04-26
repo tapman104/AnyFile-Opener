@@ -17,6 +17,7 @@ import com.openbridge.databinding.ActivityLauncherBinding
 class LauncherActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLauncherBinding
+    private lateinit var prefs: PrefsManager
     private var selectedUri: Uri? = null
     private var detectedMime: String? = null
     private var advancedExpanded = false
@@ -41,9 +42,14 @@ class LauncherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLauncherBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        prefs = PrefsManager(this)
 
-        binding.btnSettings.setOnClickListener { view ->
-            showSettingsMenu(view)
+        binding.btnSettings.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        binding.btnOverflow.setOnClickListener { view ->
+            showOverflowMenu(view)
         }
 
         binding.filePickerArea.setOnClickListener {
@@ -62,7 +68,7 @@ class LauncherActivity : AppCompatActivity() {
                 Toast.makeText(this, "Select a file first", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val mime = detectedMime ?: "application/octet-stream"
+            val mime = detectedMime ?: prefs.defaultMime
             IntentRouter.open(this, uri, mime)
         }
 
@@ -87,7 +93,7 @@ class LauncherActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val mime = binding.mimeInput.text?.toString()?.trim()
-                ?.takeIf { it.isNotEmpty() } ?: "application/octet-stream"
+                ?.takeIf { it.isNotEmpty() } ?: prefs.defaultMime
             IntentRouter.open(this, uri, mime)
         }
 
@@ -111,11 +117,12 @@ class LauncherActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSettingsMenu(view: View) {
+    private fun showOverflowMenu(view: View) {
         val popup = PopupMenu(this, view)
         popup.menu.add("How to Use")
         popup.menu.add("About")
         popup.menu.add("Buy Me a Coffee")
+        
         popup.setOnMenuItemClickListener { item ->
             when (item.title) {
                 "How to Use" -> {
@@ -222,11 +229,16 @@ class LauncherActivity : AppCompatActivity() {
         binding.fileIcon.setImageResource(android.R.drawable.ic_menu_agenda)
 
         try {
-            val result = MimeDetector.detect(contentResolver, uri, fileName)
+            val result = MimeDetector.detect(contentResolver, uri, fileName, prefs.defaultMime)
             detectedMime = result.mime
             binding.mimeInput.setText(result.mime)
             binding.detectedMimeText.text = "Detected: ${result.mime}"
             binding.detectedMimeText.visibility = View.VISIBLE
+            
+            // Auto-open logic if enabled
+            if (prefs.autoOpen && result.fileType != MimeDetector.FileType.UNKNOWN) {
+                IntentRouter.open(this, uri, result.mime)
+            }
         } catch (e: Exception) {
             detectedMime = null
             binding.detectedMimeText.visibility = View.GONE
