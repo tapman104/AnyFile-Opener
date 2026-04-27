@@ -15,6 +15,10 @@ class InspectBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetInspectBinding? = null
     private val binding get() = _binding!!
+    
+    private var currentUri: Uri? = null
+    private var totalBytesRead = 0
+    private var fullByteArray = ByteArray(0)
 
     companion object {
         private const val ARG_URI = "uri"
@@ -42,6 +46,7 @@ class InspectBottomSheet : BottomSheetDialogFragment() {
 
         val uriString = arguments?.getString(ARG_URI) ?: return
         val uri = Uri.parse(uriString)
+        currentUri = uri
 
         // File name
         val fileName = queryFileName(uri)
@@ -51,26 +56,56 @@ class InspectBottomSheet : BottomSheetDialogFragment() {
         val size = queryFileSize(uri)
         binding.inspectSizeText.text = if (size >= 0) formatSize(size) else "Unknown"
 
-        // Detect MIME
+        // Initial load
+        loadBytes(256)
+
+        // Show MIME Detector's header-based detection result
         try {
-            val result = MimeDetector.detect(requireContext().contentResolver, uri, fileName)
+            val result = MimeDetector.detectFromHeader(fullByteArray, fileName ?: "")
+            binding.headerDetectionLabel.visibility = View.VISIBLE
+            binding.headerDetectionLabel.text = "Header Scan: ${result.mime}"
             binding.inspectMimeText.text = result.mime
         } catch (e: Exception) {
             binding.inspectMimeText.text = "detection failed"
         }
 
-        // Hex dump
-        val bytes = ByteReader.readHeader(requireContext().contentResolver, uri, 256)
-        binding.hexByteCount.text = "(first ${bytes.size} bytes)"
-        binding.hexDumpText.text = buildHexDump(bytes)
-        binding.asciiDumpText.text = buildAsciiPreview(bytes)
+        binding.btnLoadMore.setOnClickListener {
+            loadBytes(512)
+            // Scroll to bottom after loading more
+            binding.hexScrollView.post { binding.hexScrollView.fullScroll(View.FOCUS_DOWN) }
+            binding.asciiScrollView.post { binding.asciiScrollView.fullScroll(View.FOCUS_DOWN) }
+        }
+    }
+
+    private fun loadBytes(count: Int) {
+        val uri = currentUri ?: return
+        val newBytes = ByteReader.readBytes(requireContext().contentResolver, uri, totalBytesRead.toLong(), count)
+        if (newBytes.isEmpty()) {
+            binding.btnLoadMore.isEnabled = false
+            binding.btnLoadMore.text = "End of file"
+            return
+        }
+
+        val updatedArray = ByteArray(fullByteArray.size + newBytes.size)
+        System.arraycopy(fullByteArray, 0, updatedArray, 0, fullByteArray.size)
+        System.arraycopy(newBytes, 0, updatedArray, fullByteArray.size, newBytes.size)
+        fullByteArray = updatedArray
+        totalBytesRead += newBytes.size
+
+        updateDumpUI()
+    }
+
+    private fun updateDumpUI() {
+        binding.hexByteCount.text = "OFFSET | HEX DUMP ($totalBytesRead bytes loaded)"
+        binding.hexDumpText.text = buildHexDump(fullByteArray)
+        binding.asciiDumpText.text = buildAsciiPreview(fullByteArray)
     }
 
     private fun buildHexDump(bytes: ByteArray): String {
         val sb = StringBuilder()
         for (i in bytes.indices step 16) {
-            val offsetStr = "%04X".format(i)
-            sb.append(offsetStr).append("  ")
+            // Offset ruler column
+            sb.append("%08X | ".format(i))
             
             for (j in 0 until 16) {
                 if (i + j < bytes.size) {
@@ -78,6 +113,7 @@ class InspectBottomSheet : BottomSheetDialogFragment() {
                 } else {
                     sb.append("   ")
                 }
+                if (j == 7) sb.append(" ") // Small gap mid-way
             }
             if (i + 16 < bytes.size) sb.append("\n")
         }
@@ -87,10 +123,12 @@ class InspectBottomSheet : BottomSheetDialogFragment() {
     private fun buildAsciiPreview(bytes: ByteArray): String {
         val sb = StringBuilder()
         for (i in bytes.indices step 16) {
+            sb.append("%08X | ".format(i))
             val end = minOf(i + 16, bytes.size)
             for (j in i until end) {
                 val b = bytes[j].toInt() and 0xFF
                 if (b in 32..126) sb.append(b.toChar()) else sb.append(".")
+                if (j - i == 7) sb.append(" ")
             }
             if (i + 16 < bytes.size) sb.append("\n")
         }

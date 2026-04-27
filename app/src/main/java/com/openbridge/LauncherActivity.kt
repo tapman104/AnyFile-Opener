@@ -7,20 +7,29 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.view.View
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.openbridge.databinding.ActivityLauncherBinding
+import kotlinx.coroutines.launch
 
 class LauncherActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLauncherBinding
     private lateinit var prefs: PrefsManager
+    private val viewModel: OpenBridgeViewModel by viewModels()
+    
     private var selectedUri: Uri? = null
     private var detectedMime: String? = null
     private var advancedExpanded = false
+    
+    private val ALL_MIME = "*${'/'}*"
+    private lateinit var recentAdapter: RecentFileAdapter
 
     private val pickFile = registerForActivityResult(
         ActivityResultContracts.OpenDocument()
@@ -44,16 +53,15 @@ class LauncherActivity : AppCompatActivity() {
         setContentView(binding.root)
         prefs = PrefsManager(this)
 
+        setupRecentFiles()
+        observeViewModel()
+
         binding.btnSettings.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        binding.btnOverflow.setOnClickListener { view ->
-            showOverflowMenu(view)
-        }
-
         binding.filePickerArea.setOnClickListener {
-            pickFile.launch(arrayOf("*/*"))
+            pickFile.launch(arrayOf(ALL_MIME))
         }
 
         binding.btnSystemFiles.setOnClickListener {
@@ -68,7 +76,10 @@ class LauncherActivity : AppCompatActivity() {
                 Toast.makeText(this, "Select a file first", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val mime = detectedMime ?: prefs.defaultMime
+            // Use current text from input or default
+            val mime = binding.mimeInput.text?.toString()?.trim()
+                ?.takeIf { it.isNotEmpty() } ?: detectedMime ?: "application/octet-stream"
+            addToRecents(uri, mime)
             IntentRouter.open(this, uri, mime)
         }
 
@@ -93,7 +104,8 @@ class LauncherActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val mime = binding.mimeInput.text?.toString()?.trim()
-                ?.takeIf { it.isNotEmpty() } ?: prefs.defaultMime
+                ?.takeIf { it.isNotEmpty() } ?: "application/octet-stream"
+            addToRecents(uri, mime)
             IntentRouter.open(this, uri, mime)
         }
 
@@ -117,74 +129,64 @@ class LauncherActivity : AppCompatActivity() {
         }
     }
 
-    private fun showOverflowMenu(view: View) {
-        val popup = PopupMenu(this, view)
-        popup.menu.add("How to Use")
-        popup.menu.add("About")
-        popup.menu.add("Buy Me a Coffee")
-        
-        popup.setOnMenuItemClickListener { item ->
-            when (item.title) {
-                "How to Use" -> {
-                    showHelpDialog()
-                    true
-                }
-                "About" -> {
-                    showAboutDialog()
-                    true
-                }
-                "Buy Me a Coffee" -> {
-                    openUrl("https://buymeacoffee.com/tapman")
-                    true
-                }
-                else -> false
-            }
-        }
-        popup.show()
-    }
-
-    private fun openUrl(url: String) {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(this, "Could not open link", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun showHelpDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Help & Guide")
-            .setMessage("AnyFile Opener is your swiss-army knife for files.\n\n" +
-                    "How to use:\n" +
-                    "1. Pick a file: Tap the center area or use 'System File Manager' for restricted folders.\n" +
-                    "2. Auto-Detect: The app scans the binary header to find the real type.\n" +
-                    "3. Open: Use 'Open Normally' or 'Open as...' to pick a category.\n\n" +
-                    "Pro Tips:\n" +
-                    "• Advanced: Type custom MIMEs like 'text/xml' if the auto-detect isn't specific enough.\n" +
-                    "• Inspect: Use 'INSPECT BINARY' to see if a file is corrupted or to read hidden text headers.")
-            .setPositiveButton("Got it", null)
-            .show()
-    }
-
-    private fun showAboutDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("About AnyFile Opener")
-            .setMessage("AnyFile Opener is a versatile utility designed to handle files that Android usually struggles with. It automatically identifies the correct file type using magic-byte detection and lets you override it manually to open files with any app you choose.\n\nCreated with ❤️ by Tapman")
-            .setPositiveButton("OK", null)
-            .show()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        selectedUri?.let { outState.putString("saved_uri", it.toString()) }
-        outState.putBoolean("advanced_expanded", advancedExpanded)
-    }
-
     private fun toggleAdvanced(expand: Boolean) {
         advancedExpanded = expand
         binding.advancedSection.visibility = if (expand) View.VISIBLE else View.GONE
-        binding.btnAdvancedToggle.text = if (expand) "Hide advanced" else "Advanced options"
+        binding.btnAdvancedToggle.text = if (expand) "Hide Advanced" else "Show Advanced Options"
+    }
+
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.detectionResult.collect { result ->
+                    if (result != null) {
+                        detectedMime = result.mime
+                        binding.mimeInput.setText(result.mime)
+                        binding.detectedMimeText.text = "Detected: ${result.mime}"
+                        binding.detectedMimeText.visibility = View.VISIBLE
+                        
+                        // Auto-open logic can't easily access flow-based autoOpen here without a collector
+                    } else {
+                        detectedMime = null
+                        binding.detectedMimeText.visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupRecentFiles() {
+        recentAdapter = RecentFileAdapter(emptyList()) { recent ->
+            val uri = Uri.parse(recent.uri)
+            try {
+                contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            } catch (e: Exception) {}
+            
+            selectedUri = uri
+            updatePickerUI(uri)
+        }
+        binding.recentFilesList.apply {
+            layoutManager = LinearLayoutManager(this@LauncherActivity)
+            adapter = recentAdapter
+        }
+
+        lifecycleScope.launch {
+            RecentFileStore.getRecentFiles(this@LauncherActivity).collect { files ->
+                if (files.isEmpty()) {
+                    binding.recentFilesSection.visibility = View.GONE
+                } else {
+                    binding.recentFilesSection.visibility = View.VISIBLE
+                    recentAdapter.updateItems(files)
+                }
+            }
+        }
+    }
+
+    private fun addToRecents(uri: Uri, mime: String) {
+        val name = queryFileName(uri) ?: uri.lastPathSegment ?: "Unknown file"
+        lifecycleScope.launch {
+            RecentFileStore.addRecentFile(this@LauncherActivity, RecentFile(uri.toString(), name, mime))
+        }
     }
 
     private fun openSystemFileManager() {
@@ -216,7 +218,7 @@ class LauncherActivity : AppCompatActivity() {
 
         if (!started) {
             try {
-                pickFile.launch(arrayOf("*/*"))
+                pickFile.launch(arrayOf(ALL_MIME))
             } catch (e: Exception) {
                 Toast.makeText(this, "Could not open file manager", Toast.LENGTH_SHORT).show()
             }
@@ -227,23 +229,9 @@ class LauncherActivity : AppCompatActivity() {
         val fileName = queryFileName(uri) ?: uri.lastPathSegment ?: "Unknown file"
         binding.fileNameText.text = fileName
         binding.fileIcon.setImageResource(android.R.drawable.ic_menu_agenda)
-
-        try {
-            val result = MimeDetector.detect(contentResolver, uri, fileName, prefs.defaultMime)
-            detectedMime = result.mime
-            binding.mimeInput.setText(result.mime)
-            binding.detectedMimeText.text = "Detected: ${result.mime}"
-            binding.detectedMimeText.visibility = View.VISIBLE
-            
-            // Auto-open logic if enabled
-            if (prefs.autoOpen && result.fileType != MimeDetector.FileType.UNKNOWN) {
-                IntentRouter.open(this, uri, result.mime)
-            }
-        } catch (e: Exception) {
-            detectedMime = null
-            binding.detectedMimeText.visibility = View.GONE
-        }
         binding.actionButtonsGroup.visibility = View.VISIBLE
+
+        viewModel.detectMime(uri, fileName)
     }
 
     private fun setupChips() {

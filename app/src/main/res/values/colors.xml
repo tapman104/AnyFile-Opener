@@ -10,6 +10,8 @@
     <!-- Brand Colors -->
     <color name="primary">#A68DF6</color>
     <color name="primary_variant">#8B7FD4</color>
+    <color name="primary_container">#2A2050</color>
+    <color name="on_primary_container">#E7DFFF</color>
     <color name="secondary">#E08EFE</color>
     <color name="secondary_container">#573092</color>
     <color name="tertiary">#FF5FD0</color>

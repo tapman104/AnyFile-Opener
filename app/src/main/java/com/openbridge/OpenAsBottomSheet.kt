@@ -1,6 +1,9 @@
 package com.openbridge
 
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -49,6 +52,9 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
 
         if (uri == null) {
             dismiss()
+            if (activity is MainActivity) {
+                activity?.finish()
+            }
             return
         }
 
@@ -61,17 +67,14 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
         )
         val detectedType  = detectedResult.fileType
 
-        // Implementation of Auto-Open preference:
-        // If detection is not UNKNOWN and autoOpen is enabled, we could skip the sheet.
-        // However, usually users want to see the choice once. 
-        // Let's implement it such that if they pick "Open Normally" it uses this logic.
-
         binding.titleText.text = when {
             fileName != null && fileName.length <= 44 -> fileName
             fileName != null -> "${fileName.take(41)}…"
             else -> "Open as…"
         }
         binding.subtitleText.text = "Detected: ${detectedType.emoji} ${detectedType.label}"
+
+        setupLastAppChip(uri, detectedResult.mime)
 
         val types = MimeDetector.FileType.entries.filter { it != MimeDetector.FileType.UNKNOWN }
         val preSelected = if (detectedType == MimeDetector.FileType.UNKNOWN) -1 else types.indexOf(detectedType)
@@ -87,8 +90,42 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
+    private fun setupLastAppChip(uri: Uri, mime: String) {
+        val lastPackage = IntentRouter.getLastApp(requireContext(), mime) ?: return
+        try {
+            val pm = requireContext().packageManager
+            val appInfo = pm.getApplicationInfo(lastPackage, 0)
+            val appLabel = pm.getApplicationLabel(appInfo)
+            val appIcon = pm.getApplicationIcon(appInfo)
+
+            binding.lastAppChip.apply {
+                visibility = View.VISIBLE
+                text = "Open again with $appLabel"
+                chipIcon = appIcon
+                setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(uri, mime)
+                        setPackage(lastPackage)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    try {
+                        startActivity(intent)
+                        dismiss()
+                        if (activity is MainActivity) activity?.finish()
+                    } catch (e: Exception) {
+                        // Package might have been uninstalled
+                        IntentRouter.open(requireContext(), uri, mime)
+                        dismiss()
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            binding.lastAppChip.visibility = View.GONE
+        }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
         if (activity is MainActivity) {
             activity?.finish()
         }
