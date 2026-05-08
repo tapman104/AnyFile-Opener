@@ -43,6 +43,26 @@ A deep-dive tool into file metadata, including hex previews, byte analysis, and 
 
 ---
 
+## 🛡️ Technical Safeguards & Stability
+To ensure long-term reliability and prevent the "messed up" states typical of legacy intent-handling apps, AnyFile X implements several architectural "locks":
+
+### 🧵 Lifecycle-Safe I/O
+- **De-coupled Execution**: All heavy file analysis in `OpenAsBottomSheet` and `InspectBottomSheet` is performed using `lifecycleScope.launch(Dispatchers.IO)`.
+- **Reference Safety**: To prevent `IllegalStateException` when a user closes the UI while a file is being read, background tasks use `applicationContext` and local copies of the `ContentResolver`. This "locks" the task to the application lifecycle rather than the transient UI lifecycle.
+
+### 🧩 Intent Integrity
+- **Transparent Bridge**: The `MainActivity` acts as a dedicated intent gatekeeper. It does not hold UI state, which ensures that complex URI data is passed cleanly to the Compose layer without being dropped during configuration changes (like screen rotation).
+- **URI Permission Forwarding**: Implements a robust "Pre-emptive Granting" logic that manually propagates read permissions to target apps before the system chooser appears, eliminating the common "Permission Denied" crashes.
+
+### 🏗️ Build Hardening
+- **Signature Security**: The signing configuration in `build.gradle.kts` is defensively coded to check for the existence of `keystore.properties`. If missing, it gracefully skips signing rather than crashing the entire build process, allowing for flexible development environments while maintaining production security.
+
+### 🔒 Signature Locking (Detection Engine)
+- **Deep-Peek Verification**: To prevent "MIME-hijacking" or incorrect routing, the engine performs recursive inspection of ZIP structures. It "locks" the identification only after verifying internal manifests (e.g., `AndroidManifest.xml` for APKs), ensuring that a generic ZIP is never mistakenly opened as an specialized format.
+- **Buffer Integrity**: Uses a fixed-size 33KB buffer for all detection tasks, ensuring deterministic memory usage and preventing OOM (Out Of Memory) errors during the analysis of massive multi-gigabyte files.
+
+---
+
 ## 📈 Current Status
 
 - [x] **Namespace Migration** (`com.anyfile.x`)
@@ -55,10 +75,9 @@ A deep-dive tool into file metadata, including hex previews, byte analysis, and 
 
 ## 🗺 Roadmap (Gemini Next)
 
-- [
 - [ ] **Batch Processing**: Simultaneous inspection and redirection of multiple files.
 - [ ] **Enhanced Hex Editor**: A native, lightweight hex viewer for power users.
- Quick Access: Jump directly to the containing folder of any analyzed file with one tap.
+- [ ] **Quick Access**: Jump directly to the containing folder of any analyzed file with one tap.
 
 ---
 
