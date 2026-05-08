@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.openbridge">
+    package="com.anyfile.x">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -29,7 +29,7 @@
         android:theme="@style/Theme.OpenBridge.Transparent">
 
         <activity
-            android:name="com.openbridge.LauncherActivity"
+            android:name="com.anyfile.x.LauncherActivity"
             android:exported="true"
             android:label="AnyFile Opener"
             android:theme="@style/Theme.OpenBridge.Launcher">
@@ -40,7 +40,7 @@
         </activity>
         
         <activity
-            android:name="com.openbridge.MainActivity"
+            android:name="com.anyfile.x.MainActivity"
             android:exported="true"
             android:excludeFromRecents="true"
             android:theme="@style/Theme.OpenBridge.Transparent">
@@ -69,13 +69,13 @@
         </activity>
 
         <activity
-            android:name="com.openbridge.SettingsActivity"
+            android:name="com.anyfile.x.SettingsActivity"
             android:exported="false"
             android:label="Settings"
             android:theme="@style/Theme.OpenBridge.Launcher" />
 
         <receiver
-            android:name="com.openbridge.FolderWidgetProvider"
+            android:name="com.anyfile.x.FolderWidgetProvider"
             android:exported="true"
             android:label="Android Folder Shortcut">
             <intent-filter>
@@ -88,12 +88,12 @@
         </receiver>
 
         <receiver
-            android:name="com.openbridge.ChooserResultReceiver"
+            android:name="com.anyfile.x.ChooserResultReceiver"
             android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.openbridge.provider"
+            android:authorities="com.anyfile.x.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
