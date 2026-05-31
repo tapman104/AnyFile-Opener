@@ -53,12 +53,15 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_help"
-            app:tint="@color/on_surface_variant"
-            android:alpha="0.6" />
+        <ImageButton
+            android:id="@+id/btnOpenFolder"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Open containing folder"
+            android:padding="12dp"
+            android:src="@drawable/ic_folder_open"
+            app:tint="@color/primary" />
     </LinearLayout>
 
     <!-- Remembered App Chip -->

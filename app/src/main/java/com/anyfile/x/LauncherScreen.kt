@@ -111,7 +111,8 @@ fun LauncherScreen(
                             }
                         },
                         onOpenAs = { selectedUri?.let { onOpenAsClick(it) } },
-                        onInspect = { selectedUri?.let { onInspectClick(it) } }
+                        onInspect = { selectedUri?.let { onInspectClick(it) } },
+                        onOpenFolder = { selectedUri?.let { IntentRouter.openFolder(context, it) } }
                     )
                 }
 
@@ -150,7 +151,10 @@ fun LauncherScreen(
                 }
 
                 items(recentFiles) { recent ->
-                    RecentFileItem(recent = recent) {
+                    RecentFileItem(
+                        recent = recent,
+                        onOpenFolder = { IntentRouter.openFolder(context, Uri.parse(recent.uri)) }
+                    ) {
                         val uri = Uri.parse(recent.uri)
                         try {
                             context.contentResolver.takePersistableUriPermission(
@@ -231,10 +235,15 @@ fun DetectionInfo(result: MimeDetector.DetectionResult?) {
 }
 
 @Composable
-fun ActionButtons(onOpenNormal: () -> Unit, onOpenAs: () -> Unit, onInspect: () -> Unit) {
+fun ActionButtons(onOpenNormal: () -> Unit, onOpenAs: () -> Unit, onInspect: () -> Unit, onOpenFolder: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Button(onClick = onOpenNormal, modifier = Modifier.fillMaxWidth()) {
-            Text("Open Normally")
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button(onClick = onOpenNormal, modifier = Modifier.weight(1f)) {
+                Text("Open Normally")
+            }
+            FilledTonalButton(onClick = onOpenFolder) {
+                Icon(Icons.Default.FolderOpen, contentDescription = "Open folder")
+            }
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick = onOpenAs, modifier = Modifier.weight(1f)) {
@@ -296,13 +305,18 @@ fun MimeChips(onChipClick: (String) -> Unit) {
 }
 
 @Composable
-fun RecentFileItem(recent: RecentFile, onClick: () -> Unit) {
+fun RecentFileItem(recent: RecentFile, onOpenFolder: () -> Unit, onClick: () -> Unit) {
     val sdf = remember { SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault()) }
     
     ListItem(
         headlineContent = { Text(recent.fileName, maxLines = 1) },
         supportingContent = { Text("${recent.mimeType} • ${sdf.format(Date(recent.timestamp))}") },
         leadingContent = { Icon(Icons.Default.History, contentDescription = null) },
+        trailingContent = {
+            IconButton(onClick = onOpenFolder) {
+                Icon(Icons.Default.FolderOpen, contentDescription = "Open folder", tint = MaterialTheme.colorScheme.primary)
+            }
+        },
         modifier = Modifier
             .clickable(onClick = onClick)
             .clip(RoundedCornerShape(8.dp))

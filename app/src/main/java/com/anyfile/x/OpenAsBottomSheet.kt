@@ -102,6 +102,10 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
                     activity?.finish()
                 }
             }
+
+            binding.btnOpenFolder.setOnClickListener {
+                IntentRouter.openFolder(requireContext(), uri)
+            }
         }
     }
 

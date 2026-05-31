@@ -69,7 +69,7 @@ class InspectBottomSheet : BottomSheetDialogFragment() {
 
             // Show MIME Detector's header-based detection result
             try {
-                val result = MimeDetector.detectFromHeader(fullByteArray, fileName ?: "")
+                val result = MimeDetector.detectFromHeader(fullByteArray, fileName ?: "", contentResolver = resolver, uri = uri)
                 binding.headerDetectionLabel.visibility = View.VISIBLE
                 binding.headerDetectionLabel.text = "Header Scan: ${result.mime}"
                 binding.inspectMimeText.text = result.mime
@@ -86,6 +86,10 @@ class InspectBottomSheet : BottomSheetDialogFragment() {
                 binding.hexScrollView.post { binding.hexScrollView.fullScroll(View.FOCUS_DOWN) }
                 binding.asciiScrollView.post { binding.asciiScrollView.fullScroll(View.FOCUS_DOWN) }
             }
+        }
+
+        binding.btnOpenFolder.setOnClickListener {
+            IntentRouter.openFolder(requireContext(), uri)
         }
     }
 

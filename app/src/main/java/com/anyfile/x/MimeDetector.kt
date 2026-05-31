@@ -46,10 +46,16 @@ object MimeDetector {
     fun detect(contentResolver: ContentResolver, uri: Uri, fileName: String?, fallbackMime: String = ALL_MIME): DetectionResult {
         // Read 33KB to support ISO detection (offset 32769) and TAR signatures (offset 257)
         val header = ByteReader.readHeader(contentResolver, uri, 33000)
-        return detectFromHeader(header, fileName?.lowercase().orEmpty(), fallbackMime)
+        return detectFromHeader(header, fileName?.lowercase().orEmpty(), fallbackMime, contentResolver, uri)
     }
 
-    fun detectFromHeader(header: ByteArray, name: String = "", fallbackMime: String = ALL_MIME): DetectionResult {
+    fun detectFromHeader(
+        header: ByteArray, 
+        name: String = "", 
+        fallbackMime: String = ALL_MIME,
+        contentResolver: ContentResolver? = null,
+        uri: Uri? = null
+    ): DetectionResult {
         if (header.isEmpty()) return extensionFallback(name, header, fallbackMime)
 
         return when {
@@ -116,7 +122,7 @@ object MimeDetector {
 
             // ZIP-based (APK, Office, EPUB, ZIP)
             matchBytes(header, 0x50, 0x4B, 0x03, 0x04) ->
-                handleZipBased(header, name)
+                handleZipBased(header, name, contentResolver, uri)
 
             // Other Archives
             matchBytes(header, 0x52, 0x61, 0x72, 0x21, 0x1A, 0x07) ->
@@ -138,30 +144,79 @@ object MimeDetector {
         }
     }
 
-    private fun handleZipBased(header: ByteArray, name: String): DetectionResult {
-        return when {
-            name.endsWith(".apk") ->
-                DetectionResult(FileType.APK, "application/vnd.android.package-archive")
+    private fun handleZipBased(header: ByteArray, name: String, contentResolver: ContentResolver? = null, uri: Uri? = null): DetectionResult {
+        // 1. Deep-Peek Verification (if resolver/uri available)
+        if (contentResolver != null && uri != null) {
+            val deepMime = verifyZipContent(contentResolver, uri)
+            if (deepMime != null) {
+                val type = when {
+                    deepMime == "application/vnd.android.package-archive" -> FileType.APK
+                    deepMime == "application/epub+zip" -> FileType.DOCUMENT
+                    deepMime.contains("officedocument") -> FileType.DOCUMENT
+                    else -> FileType.ARCHIVE
+                }
+                return DetectionResult(type, deepMime)
+            }
+        }
 
+        // 2. Heuristic header check (without full stream access)
+        return when {
             // EPUB check: "mimetype" entry usually at offset 30
             header.size >= 38 && matchBytesAt(header, 30, 0x6D, 0x69, 0x6D, 0x65, 0x74, 0x79, 0x70, 0x65) ->
                 DetectionResult(FileType.DOCUMENT, "application/epub+zip")
 
             // Office check: "[Content_Types].xml" entry usually at offset 30
             header.size >= 49 && matchBytesAt(header, 30, 0x5B, 0x43, 0x6F, 0x6E, 0x74, 0x65, 0x6E, 0x74, 0x5F, 0x54, 0x79, 0x70, 0x65, 0x73, 0x5D, 0x2E, 0x78, 0x6D, 0x6C) -> {
-                when {
-                    name.endsWith(".docx") -> DetectionResult(FileType.DOCUMENT, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-                    name.endsWith(".xlsx") -> DetectionResult(FileType.DOCUMENT, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-                    name.endsWith(".pptx") -> DetectionResult(FileType.DOCUMENT, "application/vnd.openxmlformats-officedocument.presentationml.presentation")
-                    else -> DetectionResult(FileType.DOCUMENT, "application/vnd.openxmlformats-officedocument") // Generic OpenXML
+                val mime = when {
+                    name.endsWith(".docx") -> "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    name.endsWith(".xlsx") -> "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    name.endsWith(".pptx") -> "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                    else -> "application/vnd.openxmlformats-officedocument"
                 }
+                DetectionResult(FileType.DOCUMENT, mime)
             }
 
-            // Extension fallbacks for ZIP
+            // 3. Extension fallback if deep-peek failed or wasn't available
+            name.endsWith(".apk") -> DetectionResult(FileType.APK, "application/vnd.android.package-archive")
             name.endsWith(".epub") -> DetectionResult(FileType.DOCUMENT, "application/epub+zip")
             name.endsWith(".docx") -> DetectionResult(FileType.DOCUMENT, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-
+            
             else -> DetectionResult(FileType.ARCHIVE, "application/zip")
+        }
+    }
+
+    private fun verifyZipContent(contentResolver: ContentResolver, uri: Uri): String? {
+        return try {
+            contentResolver.openInputStream(uri)?.use { stream ->
+                val zipStream = java.util.zip.ZipInputStream(stream)
+                var count = 0
+                var foundManifest = false
+                var foundContent = false
+                var foundEpub = false
+                
+                // Inspect first 30 entries for efficiency
+                while (count < 30) {
+                    val entry = zipStream.getNextEntry() ?: break
+                    val entryName = entry.name
+                    
+                    if (entryName == "AndroidManifest.xml") foundManifest = true
+                    if (entryName == "[Content_Types].xml") foundContent = true
+                    if (entryName == "mimetype") foundEpub = true
+                    
+                    if (foundManifest) return "application/vnd.android.package-archive"
+                    
+                    zipStream.closeEntry()
+                    count++
+                }
+                
+                when {
+                    foundEpub -> "application/epub+zip"
+                    foundContent -> "application/vnd.openxmlformats-officedocument"
+                    else -> null
+                }
+            }
+        } catch (e: Exception) {
+            null
         }
     }
 
@@ -336,11 +391,12 @@ object MimeDetector {
 
     private fun isLikelyText(header: ByteArray): Boolean {
         if (header.size >= 3 && header[0] == 0xEF.toByte() && header[1] == 0xBB.toByte() && header[2] == 0xBF.toByte()) return true
-        val sample = minOf(header.size, 32)
+        val sample = minOf(header.size, 1024)
+        if (sample == 0) return false
         val printable = (0 until sample).count { i ->
             val b = header[i].toInt() and 0xFF
             b in 9..13 || b in 32..126
         }
-        return printable.toDouble() / sample > 0.75
+        return printable.toDouble() / sample > 0.8
     }
 }

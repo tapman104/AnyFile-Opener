@@ -13,6 +13,10 @@
 - **Material You & AMOLED**: Personalized themes with dynamic coloring and pure black support.
 - **Recent Files & Widgets**: Quick access to your history and system storage roots.
 
+## 🖼 App Screenshot
+
+![App screenshot](images/app-screenshot.svg)
+
 
 ---
 

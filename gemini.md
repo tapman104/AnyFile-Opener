@@ -77,7 +77,7 @@ To ensure long-term reliability and prevent the "messed up" states typical of le
 
 - [ ] **Batch Processing**: Simultaneous inspection and redirection of multiple files.
 - [ ] **Enhanced Hex Editor**: A native, lightweight hex viewer for power users.
-- [ ] **Quick Access**: Jump directly to the containing folder of any analyzed file with one tap.
+- [x] **Quick Access**: Jump directly to the containing folder of any analyzed file with one tap.
 
 ---
 

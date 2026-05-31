@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.provider.DocumentsContract
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
@@ -103,5 +104,66 @@ object IntentRouter {
     fun getLastApp(context: Context, mimeType: String): String? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getString(mimeType, null)
+    }
+
+    /**
+     * Attempts to open the containing folder of the given URI.
+     * Works best with DocumentsProvider URIs (SAF) and file:// URIs.
+     */
+    fun openFolder(context: Context, uri: Uri) {
+        try {
+            // Case 1: SAF Document URI
+            if (DocumentsContract.isDocumentUri(context, uri)) {
+                val docId = DocumentsContract.getDocumentId(uri)
+                val parentId = when {
+                    docId.contains("/") -> docId.substringBeforeLast("/")
+                    docId.contains(":") -> docId.substringBeforeLast(":") + ":"
+                    else -> null
+                }
+
+                if (parentId != null) {
+                    val parentUri = DocumentsContract.buildDocumentUri(uri.authority, parentId)
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(parentUri, "vnd.android.document/directory")
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    try {
+                        context.startActivity(intent)
+                        return
+                    } catch (e: Exception) {
+                        // Fallback: try android.provider.action.BROWSE_DOCUMENT_ROOT
+                        val browseIntent = Intent("android.provider.action.BROWSE_DOCUMENT_ROOT").apply {
+                            data = parentUri
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        context.startActivity(browseIntent)
+                        return
+                    }
+                }
+            }
+
+            // Case 2: File URI
+            if (uri.scheme == "file") {
+                val path = uri.path ?: return
+                val file = java.io.File(path)
+                val parent = file.parentFile
+                if (parent != null && parent.exists()) {
+                    val parentUri = Uri.fromFile(parent)
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(parentUri, "resource/folder")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    context.startActivity(intent)
+                    return
+                }
+            }
+            
+            // If we're here, we couldn't resolve the parent or start the intent
+            Toast.makeText(context, "Cannot open folder for this file type", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error opening folder", e)
+            Toast.makeText(context, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+        }
     }
 }
