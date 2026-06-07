@@ -1,0 +1,11 @@
+AnyFile Opener (also known as OpenBridge) is an intent-driven Android file routing utility. It serves as the "Universal Translator" for the Android filesystem, ensuring that every file has a home and every intent finds its destination.
+
+Unlike standard file managers that trust file extensions blindly, AnyFile Opener inspects the "Magic Bytes" (file headers) to detect the true nature of files. It easily bypasses generic Android permission limitations by handling cross-app file sharing seamlessly. 
+
+Features:
+- Magic-byte MIME detection engine
+- Deep-peeking of ZIP structures (APK, EPUB, DOCX) and script heuristics
+- Advanced Intent Routing with robust URI permission bridging
+- Detailed file inspection via deep binary analysis
+
+This app respects your privacy: it includes zero proprietary tracking, zero ads, and is completely free and open source.
