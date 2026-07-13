@@ -1,9 +1,9 @@
-package com.anyfile.x
+package com.anyfile.x.engine
 
 import android.content.ContentResolver
 import android.net.Uri
 import android.webkit.MimeTypeMap
-import com.anyfile.x.utils.ByteReader
+import com.anyfile.x.engine.utils.ByteReader
 
 /**
  * Magic-byte MIME detection engine.

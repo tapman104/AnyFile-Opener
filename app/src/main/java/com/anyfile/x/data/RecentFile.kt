@@ -1,4 +1,4 @@
-package com.anyfile.x
+package com.anyfile.x.data
 
 @kotlinx.serialization.Serializable
 data class RecentFile(

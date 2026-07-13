@@ -75,7 +75,7 @@
             android:theme="@style/Theme.OpenBridge.Launcher" />
 
         <receiver
-            android:name="com.anyfile.x.FolderWidgetProvider"
+            android:name="com.anyfile.x.widget.FolderWidgetProvider"
             android:exported="true"
             android:label="Android Folder Shortcut">
             <intent-filter>
@@ -88,7 +88,7 @@
         </receiver>
 
         <receiver
-            android:name="com.anyfile.x.ChooserResultReceiver"
+            android:name="com.anyfile.x.routing.ChooserResultReceiver"
             android:exported="false" />
 
         <provider

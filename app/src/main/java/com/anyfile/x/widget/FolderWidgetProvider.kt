@@ -1,4 +1,4 @@
-package com.anyfile.x
+package com.anyfile.x.widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
+import com.anyfile.x.R
 
 class FolderWidgetProvider : AppWidgetProvider() {
 

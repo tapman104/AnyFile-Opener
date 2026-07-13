@@ -1,9 +1,10 @@
-package com.anyfile.x
+package com.anyfile.x.feature.openas
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.anyfile.x.databinding.ItemFileTypeBinding
+import com.anyfile.x.engine.MimeDetector
 
 /**
  * Grid adapter for the "Open as" type chooser.

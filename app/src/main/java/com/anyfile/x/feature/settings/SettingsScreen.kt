@@ -1,4 +1,4 @@
-package com.anyfile.x
+package com.anyfile.x.feature.settings
 
 import android.content.Context
 import android.content.Intent
@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.anyfile.x.data.PrefsManager
+import com.anyfile.x.ui.ThemePreference
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

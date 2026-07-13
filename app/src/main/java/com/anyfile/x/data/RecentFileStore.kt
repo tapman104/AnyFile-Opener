@@ -1,4 +1,4 @@
-package com.anyfile.x
+package com.anyfile.x.data
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit

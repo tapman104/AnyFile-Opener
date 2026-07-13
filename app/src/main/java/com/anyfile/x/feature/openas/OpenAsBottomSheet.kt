@@ -1,4 +1,4 @@
-package com.anyfile.x
+package com.anyfile.x.feature.openas
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -14,7 +14,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.anyfile.x.MainActivity
+import com.anyfile.x.data.PrefsManager
+import com.anyfile.x.data.RecentFile
+import com.anyfile.x.data.RecentFileStore
 import com.anyfile.x.databinding.BottomSheetOpenAsBinding
+import com.anyfile.x.engine.MimeDetector
+import com.anyfile.x.routing.IntentRouter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

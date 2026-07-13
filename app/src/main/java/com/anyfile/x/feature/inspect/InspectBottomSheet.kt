@@ -1,4 +1,4 @@
-package com.anyfile.x
+package com.anyfile.x.feature.inspect
 
 import android.database.Cursor
 import android.net.Uri
@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.anyfile.x.databinding.BottomSheetInspectBinding
-import com.anyfile.x.utils.ByteReader
+import com.anyfile.x.engine.MimeDetector
+import com.anyfile.x.engine.utils.ByteReader
+import com.anyfile.x.routing.IntentRouter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

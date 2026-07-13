@@ -1,4 +1,4 @@
-package com.anyfile.x
+package com.anyfile.x.feature.launcher
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,13 +24,18 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.anyfile.x.data.PrefsManager
+import com.anyfile.x.data.RecentFile
+import com.anyfile.x.data.RecentFileStore
+import com.anyfile.x.engine.MimeDetector
+import com.anyfile.x.routing.IntentRouter
 import java.text.SimpleDateFormat
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LauncherScreen(
-    viewModel: OpenBridgeViewModel,
+    viewModel: LauncherViewModel,
     prefsManager: PrefsManager,
     onSettingsClick: () -> Unit,
     onOpenAsClick: (Uri) -> Unit,

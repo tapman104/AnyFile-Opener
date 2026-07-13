@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.anyfile.x.AnyFileOpenerTheme
+import com.anyfile.x.data.PrefsManager
+import com.anyfile.x.feature.launcher.LauncherViewModel
+import com.anyfile.x.feature.openas.OpenAsBottomSheet
+import com.anyfile.x.ui.AnyFileOpenerTheme
+import com.anyfile.x.ui.ThemePreference
 
 /**
  * Transparent entry-point activity.
@@ -20,7 +24,7 @@ import com.anyfile.x.AnyFileOpenerTheme
  */
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: OpenBridgeViewModel by viewModels()
+    private val viewModel: LauncherViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

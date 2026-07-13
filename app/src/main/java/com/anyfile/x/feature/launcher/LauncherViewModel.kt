@@ -1,9 +1,12 @@
-package com.anyfile.x
+package com.anyfile.x.feature.launcher
 
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.anyfile.x.data.RecentFile
+import com.anyfile.x.data.RecentFileStore
+import com.anyfile.x.engine.MimeDetector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +14,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class OpenBridgeViewModel(application: Application) : AndroidViewModel(application) {
+class LauncherViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _detectionResult = MutableStateFlow<MimeDetector.DetectionResult?>(null)
     val detectionResult: StateFlow<MimeDetector.DetectionResult?> = _detectionResult

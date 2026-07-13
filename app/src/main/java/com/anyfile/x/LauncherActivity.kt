@@ -10,6 +10,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.anyfile.x.data.PrefsManager
+import com.anyfile.x.feature.inspect.InspectBottomSheet
+import com.anyfile.x.feature.launcher.LauncherScreen
+import com.anyfile.x.feature.launcher.LauncherViewModel
+import com.anyfile.x.feature.openas.OpenAsBottomSheet
+import com.anyfile.x.ui.AnyFileOpenerTheme
+import com.anyfile.x.ui.ThemePreference
 
 /**
  * Modernized LauncherActivity using Jetpack Compose.
@@ -17,7 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
  */
 class LauncherActivity : AppCompatActivity() {
 
-    private val viewModel: OpenBridgeViewModel by viewModels()
+    private val viewModel: LauncherViewModel by viewModels()
     private lateinit var prefs: PrefsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {

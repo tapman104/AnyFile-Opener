@@ -1,4 +1,4 @@
-package com.anyfile.x
+package com.anyfile.x.ui
 
 import android.app.Activity
 import android.os.Build

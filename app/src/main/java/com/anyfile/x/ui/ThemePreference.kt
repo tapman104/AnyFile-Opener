@@ -1,4 +1,4 @@
-package com.anyfile.x
+package com.anyfile.x.ui
 
 enum class ThemePreference {
     SYSTEM_DEFAULT,
