@@ -3,11 +3,14 @@ package com.anyfile.x.feature.settings
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Payment
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,9 +32,12 @@ fun SettingsScreen(
     var showThemeDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
     var showHelpDialog by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text("Settings") },
@@ -66,6 +72,45 @@ fun SettingsScreen(
                         )
                     },
                     modifier = Modifier.clickable { showThemeDialog = true }
+                )
+            }
+
+            // SUPPORT THE DEVELOPER SECTION
+            item {
+                SectionHeader("SUPPORT THE DEVELOPER")
+            }
+
+            item {
+                ListItem(
+                    headlineContent = { Text("GitHub Sponsors") },
+                    supportingContent = { Text("Support future development") },
+                    leadingContent = {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    modifier = Modifier.clickable {
+                        openUrl(context, "https://github.com/sponsors/tapman104")
+                    }
+                )
+            }
+
+            item {
+                ListItem(
+                    headlineContent = { Text("Pay via UPI") },
+                    supportingContent = { Text("Support using your preferred UPI app") },
+                    leadingContent = {
+                        Icon(
+                            imageVector = Icons.Default.Payment,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    modifier = Modifier.clickable {
+                        launchUpiPayment(context, snackbarHostState, scope)
+                    }
                 )
             }
 
@@ -177,10 +222,39 @@ fun SectionHeader(title: String) {
 
 private fun openUrl(context: Context, url: String) {
     try {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
         context.startActivity(intent)
     } catch (e: Exception) {
-        // Handle error
+        Toast.makeText(context, "Could not open browser", Toast.LENGTH_SHORT).show()
+    }
+}
+
+private fun launchUpiPayment(
+    context: Context,
+    snackbarHostState: SnackbarHostState,
+    scope: kotlinx.coroutines.CoroutineScope
+) {
+    val upiUri = Uri.Builder()
+        .scheme("upi")
+        .authority("pay")
+        .appendQueryParameter("pa", "tapman2@ybl")
+        .appendQueryParameter("pn", "Tapman")
+        .appendQueryParameter("cu", "INR")
+        .build()
+
+    val intent = Intent(Intent.ACTION_VIEW, upiUri)
+    val chooser = Intent.createChooser(intent, "Pay via UPI")
+
+    try {
+        context.startActivity(chooser)
+    } catch (e: Exception) {
+        val message = "No compatible UPI app installed on this device"
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        scope.launch {
+            snackbarHostState.showSnackbar(message)
+        }
     }
 }
 

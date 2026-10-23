@@ -31,6 +31,8 @@ local.properties
 *.iml
 *.hprof
 *.pro
+!proguard-rules.pro
+!**/proguard-rules.pro
 
 # Keystore files
 *.jks
@@ -146,3 +148,5 @@ $RECYCLE.BIN/
 # Exclude gradlew and gradlew.bat
 !gradlew
 !gradlew.bat
+keystore.properties
+release.jks

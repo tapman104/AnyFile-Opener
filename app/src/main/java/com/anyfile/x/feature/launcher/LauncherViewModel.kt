@@ -7,7 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.anyfile.x.data.RecentFile
 import com.anyfile.x.data.RecentFileStore
 import com.anyfile.x.engine.MimeDetector
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -26,8 +29,11 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     private val _autoOpenEvent = MutableSharedFlow<MimeDetector.DetectionResult>(replay = 0)
     val autoOpenEvent: SharedFlow<MimeDetector.DetectionResult> = _autoOpenEvent
 
+    private var detectionJob: Job? = null
+
     fun detectMime(uri: Uri, fileName: String?, triggerAutoOpen: Boolean = false) {
-        viewModelScope.launch(Dispatchers.IO) {
+        detectionJob?.cancel()
+        detectionJob = viewModelScope.launch(Dispatchers.IO) {
             _isDetecting.value = true
             try {
                 val result = MimeDetector.detect(
@@ -35,10 +41,13 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
                     uri,
                     fileName
                 )
+                ensureActive()
                 _detectionResult.value = result
                 if (triggerAutoOpen) {
                     _autoOpenEvent.emit(result)
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 _detectionResult.value = null
             } finally {
@@ -48,7 +57,14 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     }
     
     fun resetDetection() {
+        resetSelection()
+    }
+
+    fun resetSelection() {
+        detectionJob?.cancel()
+        detectionJob = null
         _detectionResult.value = null
+        _isDetecting.value = false
     }
 
     fun queryFileName(uri: Uri): String? {

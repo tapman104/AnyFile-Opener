@@ -5,84 +5,114 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_sheet"
     android:orientation="vertical"
-    android:paddingHorizontal="20dp"
+    android:paddingHorizontal="16dp"
     android:paddingTop="12dp"
     android:paddingBottom="24dp">
 
     <!-- Drag handle -->
     <View
+        android:id="@+id/dragHandle"
         android:layout_width="32dp"
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"
-        android:alpha="0.3"
-        android:background="@color/on_surface_variant" />
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_drag_handle" />
 
+    <!-- Header Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
-        android:layout_marginBottom="12dp">
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <!-- File name -->
+            <!-- File name with single-line ellipsis -->
             <TextView
                 android:id="@+id/titleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="middle"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:text="Open as…"
                 android:textColor="@color/on_surface"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <!-- Detected type subtitle -->
-            <TextView
-                android:id="@+id/subtitleText"
-                android:layout_width="match_parent"
+            <!-- Compact "Detected: Video" chip with native icon -->
+            <LinearLayout
+                android:id="@+id/detectedChip"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textColor="@color/on_surface_variant"
-                android:textSize="13sp" />
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_detected_chip"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp">
+
+                <ImageView
+                    android:id="@+id/detectedIcon"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="6dp"
+                    android:contentDescription="Detected Type Icon"
+                    app:tint="@color/primary" />
+
+                <TextView
+                    android:id="@+id/subtitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/on_surface_variant"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
+        <!-- Open containing folder action aligned to the right -->
         <ImageButton
             android:id="@+id/btnOpenFolder"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_icon_button"
             android:contentDescription="Open containing folder"
-            android:padding="12dp"
+            android:padding="10dp"
             android:src="@drawable/ic_folder_open"
             app:tint="@color/primary" />
     </LinearLayout>
 
-    <!-- Remembered App Chip -->
+    <!-- Remembered App Chip (preserved behavior) -->
     <com.google.android.material.chip.Chip
         android:id="@+id/lastAppChip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginBottom="8dp"
         android:visibility="gone"
         app:chipBackgroundColor="@color/primary_container"
-        app:chipIconVisible="true"
         app:chipIconSize="20dp"
+        app:chipIconVisible="true"
         android:textColor="@color/on_primary_container" />
 
+    <!-- Subtle divider between header and category grid -->
     <View
+        android:id="@+id/headerDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/outline_variant"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        android:background="@color/outline_variant" />
 
-    <!-- Type grid -->
+    <!-- Type grid (3 columns) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/typeList"
         android:layout_width="match_parent"
@@ -91,3 +121,4 @@
         android:overScrollMode="never" />
 
 </LinearLayout>
+

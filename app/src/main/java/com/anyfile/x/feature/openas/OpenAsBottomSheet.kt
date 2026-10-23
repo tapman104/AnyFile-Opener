@@ -53,6 +53,13 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)?.let { sheet ->
+            sheet.setBackgroundResource(android.R.color.transparent)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prefs = PrefsManager(requireContext())
@@ -87,16 +94,27 @@ class OpenAsBottomSheet : BottomSheetDialogFragment() {
             
             val detectedType = detectedResult.fileType
 
-            binding.titleText.text = when {
-                fileName != null && fileName.length <= 44 -> fileName
-                fileName != null -> "${fileName.take(41)}…"
-                else -> "Open as…"
-            }
-            binding.subtitleText.text = "Detected: ${detectedType.emoji} ${detectedType.label}"
+            binding.titleText.text = fileName ?: "Open as…"
+
+            // Compact "Detected: Video" chip with native icon
+            val detectedVisual = CategoryVisuals.get(detectedType)
+            binding.detectedIcon.setImageResource(detectedVisual.iconRes)
+            val detectedLabel = if (detectedType == MimeDetector.FileType.UNKNOWN) "Unknown" else detectedVisual.label
+            binding.subtitleText.text = "Detected: $detectedLabel"
 
             setupLastAppChip(uri, detectedResult.mime)
 
-            val types = MimeDetector.FileType.entries.filter { it != MimeDetector.FileType.UNKNOWN }
+            val types = listOf(
+                MimeDetector.FileType.VIDEO,
+                MimeDetector.FileType.AUDIO,
+                MimeDetector.FileType.IMAGE,
+                MimeDetector.FileType.DOCUMENT,
+                MimeDetector.FileType.ARCHIVE,
+                MimeDetector.FileType.APK,
+                MimeDetector.FileType.TEXT,
+                MimeDetector.FileType.FONT,
+                MimeDetector.FileType.UNKNOWN
+            )
             val preSelected = if (detectedType == MimeDetector.FileType.UNKNOWN) -1 else types.indexOf(detectedType)
 
             binding.typeList.layoutManager = GridLayoutManager(context, 3)

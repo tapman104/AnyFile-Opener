@@ -260,7 +260,11 @@ object MimeDetector {
         }
 
         // 2. System MimeTypeMap with APK priority
-        val systemMime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext)
+        val systemMime = try {
+            MimeTypeMap.getSingleton()?.getMimeTypeFromExtension(ext)
+        } catch (_: Exception) {
+            null
+        }
         if (systemMime != null) {
             val type = when {
                 systemMime.startsWith("video/") -> FileType.VIDEO

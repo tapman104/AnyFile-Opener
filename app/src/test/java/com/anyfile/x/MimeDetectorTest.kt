@@ -1,5 +1,6 @@
 package com.anyfile.x
 
+import com.anyfile.x.engine.MimeDetector
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -7,8 +8,8 @@ class MimeDetectorTest {
 
     @Test
     fun testVideoFormats() {
-        // MKV
-        assertMime(byteArrayOf(0x1A, 0x45, 0xDF.toByte(), 0xA3.toByte()), "video/x-matroska")
+        // MKV / WebM
+        assertMime(byteArrayOf(0x1A, 0x45, 0xDF.toByte(), 0xA3.toByte()), "video/webm")
         // MP4 (ftyp)
         assertMime(createFtypHeader("mp42"), "video/mp4")
         // AVI (RIFF ... AVI )
@@ -61,7 +62,7 @@ class MimeDetectorTest {
         // PDF
         assertMime("%PDF".toByteArray(), "application/pdf")
         // RAR
-        assertMime("Rar!".toByteArray(), "application/x-rar-compressed")
+        assertMime(byteArrayOf(0x52, 0x61, 0x72, 0x21, 0x1A, 0x07), "application/x-rar-compressed")
         // 7Z
         assertMime(byteArrayOf(0x37, 0x7A, 0xBC.toByte(), 0xAF.toByte()), "application/x-7z-compressed")
         // GZIP
