@@ -8,6 +8,8 @@
 <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.anyfile.x%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Ftapman104%2FAnyFile-Opener%22%2C%22author%22%3A%22tapman104%22%2C%22name%22%3A%22AnyFile%20Opener%22%7D"><img alt="Get it on Obtainium" src="https://github.com/ImranR98/apps.obtainium.imranr.dev/raw/main/public/badge_obtainium.png" height="56"></a>
 <a href="https://github-store.org/app?repo=tapman104%2FAnyFile-Opener"><img alt="Get it on Komi Store" src="https://github.com/arg387/Github-Store/raw/main/media-resources/ghs_download_badge.png" height="56"></a>
 
+[![Get it on Orion Store](https://raw.githubusercontent.com/RookieEnough/Orion-Store/refs/heads/main/assets/orion-badge.png)](https://rookieenough.github.io/Orion-Data/redirect.html?id=anyfile-opener)
+
 - **GitHub Releases:** [Download the latest APK](https://github.com/tapman104/AnyFile-Opener/releases)
 - **Obtainium:** Tap the badge above, or add this repository to Obtainium to receive updates from GitHub releases.
 - **Komi Store:** Tap the badge above, or search "AnyFile Opener" inside the app once it's indexed.
