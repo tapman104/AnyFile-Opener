@@ -45,8 +45,7 @@ See [PROJECTBUILD.md](./PROJECTBUILD.md) for technical details and build instruc
 If AnyFile Opener is useful to you, consider supporting development:
 
 <a href="https://github.com/sponsors/tapman104"><img alt="Sponsor on GitHub" src="https://img.shields.io/github/sponsors/tapman104?label=Sponsor&logo=github&color=EA4AAA&style=for-the-badge" height="40"></a>
-<a href="https://buymeacoffee.com/tapman"><img alt="Buy Me a Coffee" src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=tapman&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" height="40"></a>
-
+<a href="https://buymeacoffee.com/tapman"><img alt="Buy Me a Coffee" src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=%E2%98%95&slug=tapman&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" height="40"></a>
 ## ⚖ License
 
 See the repository for licensing details.
